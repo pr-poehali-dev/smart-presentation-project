@@ -1,57 +1,48 @@
 import { useState } from "react";
 import Icon from "@/components/ui/icon";
 
-const C = {
-  gold: "#C8A96E",
-  bg: "#0F0F0B",
-  surface: "#171712",
-  border: "#252520",
-  borderHover: "#353530",
-  text: "#E8E4D8",
-  muted: "#6A6A5A",
-  dim: "#3A3A30",
-};
-
 const NAV = [
-  { id: "cover",    label: "Начало",          short: "00" },
-  { id: "skill",    label: "Навык",            short: "01" },
-  { id: "limits",   label: "Ограничения ИИ",  short: "02" },
-  { id: "effects",  label: "Side-эффекты",    short: "03" },
-  { id: "tasks",    label: "Задания",          short: "04" },
-  { id: "examples", label: "Примеры",          short: "05" },
-  { id: "assess",   label: "Оценивание",       short: "06" },
+  { id: "cover",    label: "Начало",         short: "00" },
+  { id: "skill",    label: "Навык",           short: "01" },
+  { id: "limits",   label: "Ограничения ИИ", short: "02" },
+  { id: "effects",  label: "Side-эффекты",   short: "03" },
+  { id: "tasks",    label: "Задания",         short: "04" },
+  { id: "examples", label: "Примеры",         short: "05" },
+  { id: "assess",   label: "Оценивание",      short: "06" },
 ];
 
-const serif = { fontFamily: "'Cormorant', Georgia, serif" } as const;
-const sans  = { fontFamily: "'Golos Text', 'IBM Plex Sans', sans-serif" } as const;
+// ─── микро-компоненты ────────────────────────────────────────
 
-function Tag({ children }: { children: React.ReactNode }) {
+function Pill({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
   return (
-    <span style={{ ...sans, borderColor: C.gold, color: C.gold }}
-      className="inline-block text-[10px] tracking-[0.25em] uppercase border px-3 py-1">
+    <span className={`inline-block text-[11px] font-medium tracking-wide px-3 py-1 rounded-full
+      ${accent
+        ? "bg-violet-600 text-white"
+        : "bg-slate-100 text-slate-500 border border-slate-200"}`}>
       {children}
     </span>
   );
 }
 
-function SLabel({ num, title }: { num: string; title: string }) {
+function SecNum({ n }: { n: string }) {
   return (
-    <div className="flex items-center gap-4 mb-12">
-      <span style={{ color: C.gold, ...sans }} className="font-mono text-[11px] tracking-[0.3em]">{num}</span>
-      <div style={{ background: C.gold }} className="h-px w-8 opacity-30" />
-      <span style={{ color: C.muted, ...sans }} className="text-[11px] tracking-[0.22em] uppercase">{title}</span>
+    <span className="font-mono text-[11px] text-slate-300 tracking-widest select-none">{n}</span>
+  );
+}
+
+function Divider() {
+  return <div className="h-px bg-slate-100 w-full my-10" />;
+}
+
+function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`bg-white rounded-2xl border border-slate-100 shadow-sm ${className}`}>
+      {children}
     </div>
   );
 }
 
-function Chip({ children }: { children: React.ReactNode }) {
-  return (
-    <span style={{ ...sans, background: C.surface, color: C.gold, borderColor: C.border }}
-      className="inline-block text-[10px] px-2.5 py-0.5 border mr-1.5 mb-1.5 tracking-wide">
-      {children}
-    </span>
-  );
-}
+// ─── главный компонент ────────────────────────────────────────
 
 export default function Index() {
   const [active, setActive] = useState("cover");
@@ -62,424 +53,435 @@ export default function Index() {
   };
 
   return (
-    <div style={{ background: C.bg, color: C.text, ...sans }} className="min-h-screen">
+    <div className="min-h-screen bg-slate-50 text-slate-800"
+      style={{ fontFamily: "'Golos Text','Inter',sans-serif" }}>
 
-      {/* ── БОКОВАЯ НАВИГАЦИЯ ── */}
-      <aside style={{ borderColor: C.border }} className="fixed left-0 top-0 h-full w-14 z-50 flex flex-col items-center justify-center border-r gap-5">
-        {NAV.map((n) => (
-          <button key={n.id} onClick={() => goto(n.id)} title={n.label} className="flex flex-col items-center gap-1">
-            <span style={{ color: active === n.id ? C.gold : C.dim, fontFamily: "monospace" }}
-              className="text-[9px] tracking-[0.2em] transition-colors duration-300">{n.short}</span>
-            <div style={{ background: active === n.id ? C.gold : C.dim }}
-              className={`w-px transition-all duration-500 ${active === n.id ? "h-5" : "h-2"}`} />
-          </button>
-        ))}
-      </aside>
+      {/* ── TOP NAV ── */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-slate-100">
+        <div className="max-w-6xl mx-auto px-6 h-12 flex items-center justify-between">
+          <span className="text-[12px] font-semibold text-slate-400 tracking-wide">HSE LED 2026</span>
+          <nav className="hidden md:flex items-center gap-1">
+            {NAV.map((n) => (
+              <button key={n.id} onClick={() => goto(n.id)}
+                className={`px-3 py-1.5 rounded-lg text-[12px] transition-all duration-200
+                  ${active === n.id
+                    ? "bg-violet-50 text-violet-700 font-semibold"
+                    : "text-slate-400 hover:text-slate-700 hover:bg-slate-50"}`}>
+                {n.label}
+              </button>
+            ))}
+          </nav>
+          <span className="text-[11px] text-slate-300 font-mono hidden lg:block">EFL · Gen AI</span>
+        </div>
+      </header>
 
-      <div className="ml-14">
+      <div className="pt-12 max-w-6xl mx-auto px-6 md:px-10">
 
-        {/* ══════════════════════════════════════
+        {/* ══════════════════════════════
             00  ОБЛОЖКА
-        ══════════════════════════════════════ */}
+        ══════════════════════════════ */}
         <section id="cover" onMouseEnter={() => setActive("cover")}
-          style={{ borderColor: C.border }}
-          className="min-h-screen flex flex-col justify-between px-12 md:px-20 py-14 border-b">
+          className="min-h-screen flex flex-col justify-center py-24 gap-12">
 
-          <div className="flex items-center justify-between">
-            <Tag>HSE LED 2026</Tag>
-            <span style={{ color: C.dim, fontFamily: "monospace" }} className="text-[10px] tracking-[0.2em] uppercase">
-              EFL · Higher Education · Gen AI
-            </span>
+          <div className="flex flex-wrap items-center gap-2">
+            <Pill accent>HSE LED 2026</Pill>
+            <Pill>Английский язык</Pill>
+            <Pill>Генеративный ИИ</Pill>
+            <Pill>Неязыковые вузы</Pill>
           </div>
 
-          <div className="max-w-4xl">
-            {/* акцентная точка */}
-            <div style={{ borderColor: C.border }} className="grid grid-cols-3 gap-px border mb-10 w-fit">
-              {[...Array(9)].map((_, i) => (
-                <div key={i} style={{ background: i === 4 ? C.gold : C.bg }} className="w-2 h-2" />
-              ))}
-            </div>
-
-            <h1 style={{ ...serif, color: C.text }}
-              className="text-[clamp(2.2rem,4.8vw,4.8rem)] font-light leading-[1.08] tracking-tight mb-5">
+          <div>
+            <h1 style={{ fontFamily: "'Cormorant','Georgia',serif" }}
+              className="text-[clamp(2.6rem,5.5vw,5.5rem)] font-light leading-[1.06] tracking-tight text-slate-900 mb-6">
               Проектирование учебных заданий<br />
               по английскому языку<br />
-              <em style={{ color: C.gold }}>для неязыковых вузов</em><br />
+              <span className="text-violet-600 italic">для неязыковых вузов</span><br />
               в эпоху генеративного ИИ
             </h1>
-            <p style={{ color: C.muted }} className="text-[13px] mb-10 tracking-wide">
-              От принципов до готовых сценариев
-            </p>
-
-            <div className="flex flex-wrap gap-6">
-              {[
-                { name: "Наталья Геннадьевна Лаврентьева", org: "Ивановский государственный университет", accent: true },
-                { name: "Евгения Валерьевна Орлова", org: "Ивановский государственный энергетический университет", accent: false },
-              ].map((a) => (
-                <div key={a.name} style={{ borderLeftColor: a.accent ? C.gold : C.dim }} className="border-l-2 pl-5">
-                  <p style={{ color: C.text }} className="text-[14px] font-medium">{a.name}</p>
-                  <p style={{ color: C.muted }} className="text-[12px] mt-0.5">{a.org}</p>
-                </div>
-              ))}
-            </div>
+            <p className="text-slate-400 text-lg">От принципов до готовых сценариев</p>
           </div>
 
-          <div className="flex flex-wrap gap-x-8 gap-y-2">
+          <div className="flex flex-wrap gap-5">
+            {[
+              { name: "Наталья Геннадьевна Лаврентьева", org: "Ивановский государственный университет" },
+              { name: "Евгения Валерьевна Орлова",       org: "Ивановский государственный энергетический университет" },
+            ].map((a, i) => (
+              <Card key={a.name} className="px-6 py-4 flex items-center gap-4">
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0
+                  ${i === 0 ? "bg-violet-500" : "bg-slate-400"}`}>
+                  {a.name[0]}
+                </div>
+                <div>
+                  <p className="text-[14px] font-semibold text-slate-800">{a.name}</p>
+                  <p className="text-[12px] text-slate-400 mt-0.5">{a.org}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {/* Оглавление */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {NAV.slice(1).map((n) => (
               <button key={n.id} onClick={() => goto(n.id)}
-                className="text-[11px] tracking-[0.12em] uppercase transition-colors"
-                style={{ color: C.dim }}
-                onMouseEnter={e => (e.currentTarget.style.color = C.gold)}
-                onMouseLeave={e => (e.currentTarget.style.color = C.dim)}>
-                <span style={{ color: C.gold }}>{n.short} </span>{n.label}
+                className="group flex flex-col gap-1 p-4 rounded-xl border border-slate-200 bg-white hover:border-violet-300 hover:shadow-sm transition-all text-left">
+                <span className="font-mono text-[10px] text-slate-300 group-hover:text-violet-400 transition-colors">{n.short}</span>
+                <span className="text-[12px] text-slate-600 font-medium leading-snug">{n.label}</span>
               </button>
             ))}
           </div>
         </section>
 
-        {/* ══════════════════════════════════════
+        {/* ══════════════════════════════
             01  НАВЫК
-        ══════════════════════════════════════ */}
+        ══════════════════════════════ */}
         <section id="skill" onMouseEnter={() => setActive("skill")}
-          style={{ borderColor: C.border }} className="px-12 md:px-20 py-14 border-b">
-          <SLabel num="01" title="Формирование навыка и его устойчивость" />
+          className="py-20 border-t border-slate-100">
 
-          {/* — Компетенция — */}
-          <h2 style={serif} className="text-3xl md:text-4xl font-light mb-8" >
+          <div className="flex items-center gap-3 mb-10">
+            <SecNum n="01" />
+            <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
+              Формирование навыка и его устойчивость
+            </h2>
+          </div>
+
+          {/* Блок компетенций */}
+          <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
             Иноязычная коммуникативная компетенция
-          </h2>
-
-          <div style={{ background: C.border }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px mb-6">
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[
-              { icon: "BookOpen",   label: "Лингвистический",           sub: "Грамотность · связность текста" },
-              { icon: "GitBranch",  label: "Дискурсивный / стратегический", sub: "Логичное высказывание + тактики компенсации" },
-              { icon: "Globe",      label: "Социокультурный",            sub: "Понимание культурного контекста" },
-              { icon: "Smartphone", label: "Прагматический / цифровой", sub: "Реальные задачи + цифровые инструменты" },
+              { icon: "BookOpen",   color: "bg-violet-50 text-violet-600",  label: "Лингвистический",                sub: "Грамотность и связность текста" },
+              { icon: "GitBranch",  color: "bg-blue-50 text-blue-600",      label: "Дискурсивный / стратегический", sub: "Логичное высказывание + тактики компенсации" },
+              { icon: "Globe",      color: "bg-teal-50 text-teal-600",      label: "Социокультурный",               sub: "Понимание культурного контекста" },
+              { icon: "Smartphone", color: "bg-orange-50 text-orange-600",  label: "Прагматический / цифровой",    sub: "Реальные задачи + цифровые инструменты" },
             ].map((it) => (
-              <div key={it.label} style={{ background: C.bg }}
-                className="p-7 group transition-colors hover:brightness-125">
-                <div style={{ borderColor: C.border }} className="w-8 h-8 flex items-center justify-center mb-5 border group-hover:border-[#C8A96E] transition-colors">
-                  <Icon name={it.icon as "Globe"} size={14} style={{ color: C.gold }} />
+              <Card key={it.label} className="p-5 hover:shadow-md transition-shadow">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${it.color}`}>
+                  <Icon name={it.icon as "Globe"} size={16} />
                 </div>
-                <p style={{ color: C.text }} className="text-[13px] font-medium mb-1.5 leading-snug">{it.label}</p>
-                <p style={{ color: C.muted }} className="text-[11px] leading-relaxed">{it.sub}</p>
-              </div>
+                <p className="text-[14px] font-semibold text-slate-800 mb-1 leading-snug">{it.label}</p>
+                <p className="text-[12px] text-slate-400 leading-relaxed">{it.sub}</p>
+              </Card>
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-5 mb-14">
+          <div className="flex flex-wrap gap-2 mb-12">
             {["Автоматизм", "Функциональность", "Адаптивность и гибкость"].map((c) => (
-              <span key={c} className="flex items-center gap-2">
-                <span style={{ background: C.gold }} className="w-1 h-1 rounded-full inline-block" />
-                <span style={{ color: C.muted }} className="text-[12px]">{c}</span>
-              </span>
+              <Pill key={c}>{c}</Pill>
             ))}
           </div>
 
-          {/* — Skill Acquisition Theory — */}
-          <div style={{ borderColor: C.border }} className="border p-8 mb-6 max-w-4xl">
-            <div className="flex items-center gap-3 mb-7">
-              <Tag>Skill Acquisition Theory</Tag>
-              <span style={{ color: C.dim }} className="text-[11px]">1.1 · Продуктивный коммуникативный навык</span>
-            </div>
+          <Divider />
 
-            {/* Цепочка */}
-            <div className="flex flex-wrap items-center gap-2 mb-8">
-              {["Декларативный", "Процедурный", "Автоматический", "Перенос в реальную коммуникацию"].map((s, i, a) => (
-                <div key={s} className="flex items-center gap-2">
-                  <div style={{ background: i === a.length - 1 ? C.gold : C.surface, color: i === a.length - 1 ? C.bg : C.gold, borderColor: C.border }}
-                    className={`px-4 py-2 text-[12px] tracking-wide border ${i === a.length - 1 ? "font-semibold" : ""}`}>{s}</div>
-                  {i < a.length - 1 && <Icon name="ChevronRight" size={12} style={{ color: C.dim }} />}
-                </div>
-              ))}
-            </div>
+          {/* Skill Acquisition Theory */}
+          <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
+            Skill Acquisition Theory · 1.1 Продуктивный коммуникативный навык
+          </p>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
-              {[
-                { t: "Активное извлечение", d: "Рассказ и ответы без опоры на текст; переключение в диалоге" },
-                { t: "«Желательные трудности»", d: "Чередование задач и структур, смещение фокуса с формы на смысл" },
-                { t: "Deliberate practice", d: "Целенаправленное повторение с получением обратной связи" },
-                { t: "Реальный контекст", d: "Упражнения имитируют когнитивные требования живой коммуникации" },
-              ].map((it) => (
-                <div key={it.t} style={{ borderColor: C.border, background: C.surface }} className="p-5 border">
-                  <p style={{ color: C.text }} className="text-[12px] font-semibold mb-1.5">{it.t}</p>
-                  <p style={{ color: C.muted }} className="text-[11px] leading-relaxed">{it.d}</p>
-                </div>
-              ))}
-            </div>
-
-            <p style={{ color: C.dim, borderColor: C.border }} className="mt-5 pt-5 border-t text-[12px] italic">
-              Подлинная автоматизация формируется через процедурализацию в условиях, приближённых к реальным
-            </p>
+          {/* Цепочка */}
+          <div className="flex flex-wrap items-center gap-2 mb-8">
+            {["Декларативный", "Процедурный", "Автоматический", "Перенос в реальную коммуникацию"].map((s, i, a) => (
+              <div key={s} className="flex items-center gap-2">
+                <span className={`px-4 py-2 rounded-lg text-[13px] font-medium
+                  ${i === a.length - 1
+                    ? "bg-violet-600 text-white shadow-sm shadow-violet-200"
+                    : "bg-white border border-slate-200 text-slate-600"}`}>{s}</span>
+                {i < a.length - 1 && <Icon name="ChevronRight" size={14} className="text-slate-300" />}
+              </div>
+            ))}
           </div>
 
-          {/* — AI-опосредованная модель — */}
-          <div className="max-w-4xl">
-            <div className="flex items-center gap-3 mb-6">
-              <Tag>AI-опосредованная модель</Tag>
-              <span style={{ color: C.dim }} className="text-[11px]">1.2 · Устойчивость навыка в эпоху ИИ</span>
-            </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            {[
+              { t: "Активное извлечение",      d: "Рассказ и ответы без опоры на текст; переключение в диалоге" },
+              { t: "«Желательные трудности»",  d: "Чередование задач и структур, смещение фокуса с формы на смысл" },
+              { t: "Deliberate practice",       d: "Целенаправленное повторение с получением обратной связи" },
+              { t: "Реальный контекст",         d: "Упражнения имитируют когнитивные требования живой коммуникации" },
+            ].map((it) => (
+              <Card key={it.t} className="p-5">
+                <p className="text-[13px] font-semibold text-slate-800 mb-2">{it.t}</p>
+                <p className="text-[12px] text-slate-400 leading-relaxed">{it.d}</p>
+              </Card>
+            ))}
+          </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div style={{ borderColor: C.border }} className="border p-6">
-                <p style={{ color: C.dim }} className="text-[10px] uppercase tracking-[0.2em] mb-3">Лингвистический трек</p>
-                <p style={{ color: C.muted }} className="text-[13px] italic">Без изменений — традиционный путь формирования навыка</p>
-              </div>
-              <div style={{ borderColor: C.gold, background: C.surface }} className="border border-opacity-40 p-6">
-                <p style={{ color: C.gold }} className="text-[10px] uppercase tracking-[0.2em] mb-4">AI-опосредованный трек — новый</p>
-                <ul className="space-y-1.5 mb-4">
-                  {["Практика с немедленной обратной связью", "Метакогнитивный контроль", "Адаптация к ии-собеседнику"].map(it => (
-                    <li key={it} className="flex gap-2 text-[12px]" style={{ color: "#9A9A8A" }}>
-                      <span style={{ color: C.gold }}>·</span>{it}
-                    </li>
-                  ))}
-                </ul>
-                <div style={{ borderColor: C.border }} className="pt-4 border-t">
-                  <p style={{ color: C.dim }} className="text-[10px] uppercase tracking-wide mb-2">Human-надстройка</p>
+          <div className="bg-violet-50 border border-violet-100 rounded-xl px-6 py-4 text-[13px] text-violet-700 italic max-w-2xl">
+            Подлинная автоматизация формируется через процедурализацию в условиях, приближённых к реальным
+          </div>
+
+          <Divider />
+
+          {/* AI-опосредованная модель */}
+          <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
+            AI-опосредованная модель · 1.2 Устойчивость навыка
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-4 max-w-3xl">
+            <Card className="p-6">
+              <p className="text-[11px] uppercase tracking-widest text-slate-300 mb-3 font-medium">Лингвистический трек</p>
+              <p className="text-[14px] text-slate-500 italic">Без изменений — традиционный путь формирования навыка</p>
+            </Card>
+            <Card className="p-6 border-violet-200 bg-violet-50/50">
+              <p className="text-[11px] uppercase tracking-widest text-violet-500 mb-4 font-medium">AI-опосредованный трек — новый</p>
+              <ul className="space-y-2 mb-5">
+                {["Практика с немедленной обратной связью", "Метакогнитивный контроль", "Адаптация к ии-собеседнику"].map(it => (
+                  <li key={it} className="flex gap-2 text-[13px] text-slate-600">
+                    <Icon name="Check" size={13} className="text-violet-500 mt-0.5 shrink-0" />{it}
+                  </li>
+                ))}
+              </ul>
+              <div className="border-t border-violet-100 pt-4">
+                <p className="text-[11px] uppercase tracking-widest text-slate-400 mb-2 font-medium">Human-надстройка</p>
+                <div className="flex flex-wrap gap-1.5">
                   {["Интеракциональная точность", "Прагматическая гибкость", "Эмоциональная связь"].map(it => (
-                    <Chip key={it}>{it}</Chip>
+                    <span key={it} className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-violet-200 text-violet-600">{it}</span>
                   ))}
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════
+        {/* ══════════════════════════════
             02  ОГРАНИЧЕНИЯ ИИ
-        ══════════════════════════════════════ */}
+        ══════════════════════════════ */}
         <section id="limits" onMouseEnter={() => setActive("limits")}
-          style={{ borderColor: C.border }} className="px-12 md:px-20 py-14 border-b">
-          <SLabel num="02" title="Ограничения ИИ" />
+          className="py-20 border-t border-slate-100">
 
-          <h2 style={{ ...serif, color: C.text }} className="text-3xl md:text-5xl font-light mb-4 leading-tight">
-            Что ИИ <em style={{ color: C.gold }}>не может</em> сделать за студента
-          </h2>
-          <p style={{ color: C.muted }} className="text-[13px] mb-12 max-w-xl leading-relaxed">
+          <div className="flex items-center gap-3 mb-10">
+            <SecNum n="02" />
+            <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Ограничения ИИ</h2>
+          </div>
+
+          <p className="text-slate-500 text-base max-w-xl mb-10 leading-relaxed">
             LLM не улавливают тонкие дискурсивные связи — это создаёт системные дефициты в формировании навыка
           </p>
 
-          {/* 3 дефицита */}
-          <div style={{ background: C.border }} className="grid md:grid-cols-3 gap-px mb-14">
+          <div className="grid sm:grid-cols-3 gap-4 mb-14">
             {[
-              { area: "Лексика и грамматика", icon: "Type",
-                body: "LLM не улавливают тонкие лексические связи между частями дискурса. Знание слов и их ассоциативных полей формируется встроенным в прагматические активности — критично для беглой, контекстуально-уместной речи." },
-              { area: "Чтение", icon: "BookOpen",
+              { area: "Лексика и грамматика", icon: "Type",     color: "bg-red-50 text-red-500",
+                body: "LLM не улавливают тонкие лексические связи между частями дискурса. Знание ассоциативных полей формируется только в прагматических активностях." },
+              { area: "Чтение",               icon: "BookOpen", color: "bg-amber-50 text-amber-500",
                 body: "Контекстуальное понимание — реконструкция интенционального смысла с учётом ситуации и фоновых знаний — недоступно для модели." },
-              { area: "Говорение", icon: "Mic",
-                body: "Машинный тип прагматики развивает «шаблонный» язык: отсутствуют «прагматические» реакции, живая спонтанность речи." },
+              { area: "Говорение",             icon: "Mic",      color: "bg-orange-50 text-orange-500",
+                body: "Машинный тип прагматики развивает «шаблонный» язык: отсутствуют живые «прагматические» реакции и спонтанность речи." },
             ].map((it) => (
-              <div key={it.area} style={{ background: C.bg }}
-                className="p-8 group hover:brightness-110 transition-all">
-                <Icon name={it.icon as "Type"} size={15} style={{ color: C.dim }} className="mb-4 group-hover:text-[#C8A96E] transition-colors" />
-                <p style={{ color: C.gold }} className="text-[11px] uppercase tracking-[0.2em] mb-3">{it.area}</p>
-                <p style={{ color: C.muted }} className="text-[13px] leading-[1.8]">{it.body}</p>
+              <Card key={it.area} className="p-6 hover:shadow-md transition-shadow">
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${it.color}`}>
+                  <Icon name={it.icon as "Type"} size={16} />
+                </div>
+                <p className="text-[13px] font-semibold text-slate-700 mb-2">{it.area}</p>
+                <p className="text-[12px] text-slate-400 leading-[1.7]">{it.body}</p>
+              </Card>
+            ))}
+          </div>
+
+          {/* Иерархия компетенций */}
+          <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
+            Иерархия компетенций
+          </p>
+          <div className="flex flex-col gap-0 max-w-lg">
+            {[
+              { label: "Лексико-тематические связи",  sub: "Знание слов и их ассоциативных полей",                             arrow: "обеспечивают материал для" },
+              { label: "Контекстуальное понимание",   sub: "Способность выводить импликатуры, интерпретировать интенции",       arrow: "создаёт основу для" },
+              { label: "Прагматическая компетенция",  sub: "Способность действовать уместно, управлять социальными отношениями", arrow: null },
+            ].map((node, i) => (
+              <div key={node.label}>
+                <Card className={`p-5 ${i === 2 ? "border-violet-200 bg-violet-50/40" : ""}`}>
+                  <p className={`text-[14px] font-semibold mb-1 ${i === 2 ? "text-violet-700" : "text-slate-800"}`}>{node.label}</p>
+                  <p className="text-[12px] text-slate-400">{node.sub}</p>
+                </Card>
+                {node.arrow && (
+                  <div className="flex items-center gap-2 py-2 pl-5">
+                    <Icon name="ArrowDown" size={12} className="text-slate-300" />
+                    <span className="text-[11px] text-slate-300 italic">{node.arrow}</span>
+                  </div>
+                )}
               </div>
             ))}
           </div>
 
-          {/* Цепочка компетенций */}
-          <div className="max-w-2xl">
-            <p style={{ color: C.dim }} className="text-[10px] uppercase tracking-[0.25em] mb-6">Иерархия компетенций</p>
-            <div className="space-y-0">
-              {[
-                { label: "Лексико-тематические связи", sub: "знание слов и их ассоциативных полей", dir: "обеспечивают материал для" },
-                { label: "Контекстуальное понимание", sub: "способность выводить импликатуры, интерпретировать интенции", dir: "создаёт основу для" },
-                { label: "Прагматическая компетенция", sub: "способность действовать уместно, управлять социальными отношениями", dir: null },
-              ].map((node, i) => (
-                <div key={node.label}>
-                  <div style={{ borderColor: i === 2 ? C.gold : C.border, background: i === 2 ? C.surface : C.bg }}
-                    className="flex items-start gap-4 p-5 border">
-                    <div style={{ background: i === 2 ? C.gold : C.dim }} className="w-1 self-stretch rounded-sm shrink-0" />
-                    <div>
-                      <p style={{ color: C.text }} className="text-[14px] font-medium">{node.label}</p>
-                      <p style={{ color: C.muted }} className="text-[12px] mt-1">{node.sub}</p>
-                    </div>
-                  </div>
-                  {node.dir && (
-                    <div className="flex items-center gap-2 py-2 pl-6">
-                      <Icon name="ArrowDown" size={11} style={{ color: C.dim }} />
-                      <span style={{ color: C.dim }} className="text-[10px] italic">{node.dir}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+          <Divider />
 
           {/* Максимы Грайса */}
-          <div className="mt-12">
-            <p style={{ color: C.dim }} className="text-[10px] uppercase tracking-[0.25em] mb-5">
-              Письмо · нарушение максим Грайса при AI-генерации
-            </p>
-            <div style={{ background: C.border }} className="grid grid-cols-2 md:grid-cols-4 gap-px max-w-3xl">
-              {[
-                { m: "Quantity", rule: "Будь информативен, но не избыточен", ai: "Чрезмерная информация" },
-                { m: "Quality",  rule: "Будь правдив",                       ai: "Ложные утверждения как факты" },
-                { m: "Relation", rule: "Будь релевантен",                    ai: "Сбои в поддержании релевантности" },
-                { m: "Manner",   rule: "Будь ясен, краток, организован",     ai: "Verbosity, нет иерархической структуры" },
-              ].map((g) => (
-                <div key={g.m} style={{ background: C.bg }} className="p-5">
-                  <p style={{ color: C.gold }} className="font-mono text-[12px] font-semibold mb-2">{g.m}</p>
-                  <p style={{ color: C.muted }} className="text-[11px] mb-2 leading-snug">{g.rule}</p>
-                  <p style={{ color: "#7A3A3A" }} className="text-[11px] leading-snug">↳ {g.ai}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════════
-            03  SIDE-ЭФФЕКТЫ
-        ══════════════════════════════════════ */}
-        <section id="effects" onMouseEnter={() => setActive("effects")}
-          style={{ borderColor: C.border }} className="px-12 md:px-20 py-14 border-b">
-          <SLabel num="03" title="Side-эффекты в обучении с ИИ" />
-
-          <h2 style={{ ...serif, color: C.text }} className="text-3xl md:text-5xl font-light mb-12 leading-tight">
-            Риски, которые<br />
-            <em style={{ color: C.gold }}>нельзя игнорировать</em>
-          </h2>
-
-          <div className="max-w-2xl space-y-0">
+          <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
+            Письмо · нарушение максим Грайса при AI-генерации
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl">
             {[
-              { n: "01", title: "Перенос ответственности",                  desc: "Студент делегирует мышление инструменту, теряя авторство" },
-              { n: "02", title: "Эхо-камера",                               desc: "Подтверждение имеющихся идей без критического вызова" },
-              { n: "03", title: "Упрощение опыта",                          desc: "Редукция сложности — обход когнитивных трудностей" },
-              { n: "04", title: "Потеря настойчивости",                     desc: "Снижение толерантности к трудности и усилию" },
-              { n: "05", title: "Слабое качество самостоятельной работы",   desc: "Деградация продуктивных навыков без поддержки ИИ" },
-            ].map((it) => (
-              <div key={it.n} style={{ borderColor: C.border }}
-                className="group flex items-start gap-7 py-7 border-b transition-colors hover:bg-[#171712] px-2 -mx-2">
-                <span style={{ color: C.dim, fontFamily: "monospace" }} className="text-[10px] mt-0.5 shrink-0">{it.n}</span>
-                <div>
-                  <p style={{ color: C.gold }} className="text-[15px] font-medium mb-1">{it.title}</p>
-                  <p style={{ color: C.muted }} className="text-[12px] leading-relaxed">{it.desc}</p>
+              { m: "Quantity", rule: "Будь информативен, но не избыточен", ai: "Чрезмерная информация" },
+              { m: "Quality",  rule: "Будь правдив",                       ai: "Ложные утверждения как факты" },
+              { m: "Relation", rule: "Будь релевантен",                    ai: "Сбои в поддержании релевантности" },
+              { m: "Manner",   rule: "Будь ясен, краток, организован",     ai: "Verbosity, нет иерархии" },
+            ].map((g) => (
+              <Card key={g.m} className="p-4">
+                <p className="font-mono text-[13px] font-bold text-violet-600 mb-2">{g.m}</p>
+                <p className="text-[11px] text-slate-500 mb-3 leading-relaxed">{g.rule}</p>
+                <div className="flex items-start gap-1.5">
+                  <Icon name="AlertCircle" size={11} className="text-red-400 mt-0.5 shrink-0" />
+                  <p className="text-[11px] text-red-400 leading-snug">{g.ai}</p>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         </section>
 
-        {/* ══════════════════════════════════════
-            04  УСТОЙЧИВЫЕ ЗАДАНИЯ
-        ══════════════════════════════════════ */}
-        <section id="tasks" onMouseEnter={() => setActive("tasks")}
-          style={{ borderColor: C.border }} className="px-12 md:px-20 py-14 border-b">
-          <SLabel num="04" title="Устойчивые задания: параметры, характеристики, принципы" />
+        {/* ══════════════════════════════
+            03  SIDE-ЭФФЕКТЫ
+        ══════════════════════════════ */}
+        <section id="effects" onMouseEnter={() => setActive("effects")}
+          className="py-20 border-t border-slate-100">
 
-          <h2 style={{ ...serif, color: C.text }} className="text-3xl md:text-5xl font-light mb-12 leading-tight">
-            Задания, устойчивые к<br />
-            <em style={{ color: C.gold }}>автоматизированному</em><br />
-            выполнению
-          </h2>
+          <div className="flex items-center gap-3 mb-10">
+            <SecNum n="03" />
+            <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Side-эффекты в обучении с ИИ</h2>
+          </div>
+
+          <p className="text-slate-500 text-base mb-10 max-w-lg leading-relaxed">
+            Риски, которые нельзя игнорировать при проектировании учебной среды
+          </p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
+            {[
+              { n: "01", title: "Перенос ответственности",                desc: "Студент делегирует мышление инструменту, теряя авторство",              icon: "ArrowRightLeft" },
+              { n: "02", title: "Эхо-камера",                             desc: "Подтверждение имеющихся идей без критического вызова",                    icon: "Volume2" },
+              { n: "03", title: "Упрощение опыта",                        desc: "Редукция сложности — обход когнитивных трудностей",                       icon: "TrendingDown" },
+              { n: "04", title: "Потеря настойчивости",                   desc: "Снижение толерантности к трудности и усилию",                             icon: "Wind" },
+              { n: "05", title: "Слабость самостоятельной работы",        desc: "Деградация продуктивных навыков без поддержки ИИ",                         icon: "UserX" },
+            ].map((it) => (
+              <Card key={it.n} className="p-5 hover:shadow-md transition-shadow">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+                    <Icon name={it.icon as "Wind"} size={14} className="text-red-400" />
+                  </div>
+                  <div>
+                    <p className="text-[13px] font-semibold text-slate-800 mb-1">{it.title}</p>
+                    <p className="text-[12px] text-slate-400 leading-relaxed">{it.desc}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* ══════════════════════════════
+            04  УСТОЙЧИВЫЕ ЗАДАНИЯ
+        ══════════════════════════════ */}
+        <section id="tasks" onMouseEnter={() => setActive("tasks")}
+          className="py-20 border-t border-slate-100">
+
+          <div className="flex items-center gap-3 mb-10">
+            <SecNum n="04" />
+            <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
+              Устойчивые задания: параметры, характеристики, принципы
+            </h2>
+          </div>
 
           <div className="grid md:grid-cols-2 gap-10 max-w-4xl mb-14">
             {/* Параметры */}
             <div>
-              <p style={{ color: C.dim }} className="text-[10px] uppercase tracking-[0.25em] mb-5">Параметры устойчивости</p>
+              <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-4">Параметры устойчивости</p>
               <div className="space-y-3">
                 {[
-                  { t: "Контекстуализация", d: "Контекстное понимание, уникальная ситуация" },
-                  { t: "Персонализация", d: "Личный опыт, убеждения, позиция студента" },
-                  { t: "Акцент на процесс", d: "Важен путь, а не только финальный продукт" },
+                  { t: "Контекстуализация", d: "Контекстное понимание, уникальная ситуация", icon: "MapPin" },
+                  { t: "Персонализация",    d: "Личный опыт, убеждения, позиция студента",   icon: "User" },
+                  { t: "Акцент на процесс", d: "Важен путь, а не только финальный продукт",  icon: "Route" },
                 ].map((p) => (
-                  <div key={p.t} style={{ borderColor: C.border }}
-                    className="flex gap-4 p-5 border hover:border-[#C8A96E] transition-colors" style2={{ borderColor: C.border }}>
-                    <div style={{ background: C.gold }} className="w-0.5 shrink-0 rounded-sm opacity-50" />
-                    <div>
-                      <p style={{ color: C.text }} className="text-[13px] font-semibold mb-1">{p.t}</p>
-                      <p style={{ color: C.muted }} className="text-[12px]">{p.d}</p>
+                  <Card key={p.t} className="p-4 flex items-start gap-4 hover:border-violet-200 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
+                      <Icon name={p.icon as "User"} size={14} className="text-violet-500" />
                     </div>
-                  </div>
+                    <div>
+                      <p className="text-[13px] font-semibold text-slate-800">{p.t}</p>
+                      <p className="text-[12px] text-slate-400 mt-0.5">{p.d}</p>
+                    </div>
+                  </Card>
                 ))}
               </div>
             </div>
 
             {/* Характеристики */}
             <div>
-              <p style={{ color: C.dim }} className="text-[10px] uppercase tracking-[0.25em] mb-5">Характеристики заданий</p>
-              <div className="grid grid-cols-2 gap-2">
+              <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-4">Характеристики заданий</p>
+              <div className="flex flex-wrap gap-2">
                 {["Динамичность", "Непредсказуемость", "Мета-когнитивная нагрузка", "Интеграция навыков",
-                  "Контент в реальном времени", "Социальное взаимодействие", "Аффективное вовлечение"].map((c, i) => (
-                  <div key={c} style={{ borderColor: C.border, color: C.muted }}
-                    className={`p-3.5 text-[11px] text-center border hover:text-[#C8A96E] hover:border-[#C8A96E] transition-all cursor-default ${i === 6 ? "col-span-2" : ""}`}>
-                    {c}
-                  </div>
+                  "Контент в реальном времени", "Социальное взаимодействие", "Аффективное вовлечение"].map((c) => (
+                  <span key={c} className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-[12px] font-medium
+                    hover:bg-violet-100 hover:text-violet-700 transition-colors cursor-default">{c}</span>
                 ))}
               </div>
             </div>
           </div>
 
           {/* Типология */}
-          <div>
-            <p style={{ color: C.dim }} className="text-[10px] uppercase tracking-[0.25em] mb-5">
-              Типология заданий и целевые дефициты
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full max-w-5xl text-[12px] border-collapse">
-                <thead>
-                  <tr style={{ borderColor: C.border }} className="border-b">
-                    {["Тип", "Название", "Дефицит AI", "Механизм донастройки"].map(h => (
-                      <th key={h} style={{ color: C.dim }} className="text-left py-3 pr-6 text-[10px] uppercase tracking-[0.2em] font-normal">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { t: "T1", name: "Релевантность и максимы",        deficit: "Relation, Quantity, Quality",                      mech: "Маркировка нарушений + замена" },
-                    { t: "T2", name: "Импликатуры и небуквальные смыслы", deficit: "Отсутствие Theory of Mind, буквализм",          mech: "Косвенные реплики → вывод импликатуры" },
-                    { t: "T3", name: "Лексико-тематические связи",      deficit: "Тонкие лексические отношения, коллокации",         mech: "Групповое редактирование + аутентичные примеры" },
-                    { t: "T4", name: "Социопрагматическая уместность",  deficit: "Игнорирование дистанции и статуса",                mech: "Ролевая игра + объяснение выбора" },
-                    { t: "T5", name: "Ремонт и стратегии восстановления", deficit: "Отсутствие other-repair",                        mech: "Намеренные помехи + обязательная repair" },
-                    { t: "T6", name: "Trans-pragmatic competence",      deficit: "Некритическая интернализация AI-шаблонов",          mech: "Групповая рефлексия + формулирование правил" },
-                  ].map((row) => (
-                    <tr key={row.t} style={{ borderColor: C.border }}
-                      className="border-b hover:bg-[#171712] transition-colors">
-                      <td style={{ color: C.gold }} className="py-4 pr-6 font-mono font-semibold align-top">{row.t}</td>
-                      <td style={{ color: C.text }} className="py-4 pr-6 font-medium align-top">{row.name}</td>
-                      <td style={{ color: C.muted }} className="py-4 pr-6 align-top">{row.deficit}</td>
-                      <td style={{ color: C.muted }} className="py-4 align-top">{row.mech}</td>
-                    </tr>
+          <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
+            Типология заданий и целевые дефициты
+          </p>
+          <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-sm">
+            <table className="w-full text-[13px]">
+              <thead>
+                <tr className="border-b border-slate-100 bg-slate-50">
+                  {["Тип", "Название", "Дефицит AI", "Механизм донастройки"].map(h => (
+                    <th key={h} className="text-left py-3 px-5 text-[11px] uppercase tracking-widest font-medium text-slate-400">{h}</th>
                   ))}
-                </tbody>
-              </table>
-            </div>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { t: "T1", name: "Релевантность и максимы",           deficit: "Relation, Quantity, Quality",              mech: "Маркировка нарушений + замена" },
+                  { t: "T2", name: "Импликатуры и небуквальные смыслы", deficit: "Отсутствие Theory of Mind, буквализм",      mech: "Косвенные реплики → вывод импликатуры" },
+                  { t: "T3", name: "Лексико-тематические связи",        deficit: "Тонкие лексические отношения, коллокации",  mech: "Групповое редактирование + аутентичные примеры" },
+                  { t: "T4", name: "Социопрагматическая уместность",   deficit: "Игнорирование дистанции и статуса",          mech: "Ролевая игра + объяснение выбора" },
+                  { t: "T5", name: "Ремонт и стратегии восстановления", deficit: "Отсутствие other-repair",                    mech: "Намеренные помехи + обязательная repair" },
+                  { t: "T6", name: "Trans-pragmatic competence",        deficit: "Некритическая интернализация AI-шаблонов",   mech: "Групповая рефлексия + формулирование правил" },
+                ].map((row, i) => (
+                  <tr key={row.t} className={`border-b border-slate-50 hover:bg-slate-50 transition-colors ${i % 2 === 0 ? "" : ""}`}>
+                    <td className="py-3.5 px-5">
+                      <span className="font-mono font-bold text-violet-600 text-[12px]">{row.t}</span>
+                    </td>
+                    <td className="py-3.5 px-5 font-medium text-slate-800">{row.name}</td>
+                    <td className="py-3.5 px-5 text-slate-400">{row.deficit}</td>
+                    <td className="py-3.5 px-5 text-slate-400">{row.mech}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </section>
 
-        {/* ══════════════════════════════════════
+        {/* ══════════════════════════════
             05  ПРИМЕРЫ ЗАДАНИЙ
-        ══════════════════════════════════════ */}
+        ══════════════════════════════ */}
         <section id="examples" onMouseEnter={() => setActive("examples")}
-          style={{ borderColor: C.border }} className="px-12 md:px-20 py-14 border-b">
-          <SLabel num="05" title="Примеры заданий" />
+          className="py-20 border-t border-slate-100">
 
-          <h2 style={{ ...serif, color: C.text }} className="text-3xl md:text-5xl font-light mb-12 leading-tight">
-            Четыре сценария<br />
-            <em style={{ color: C.gold }}>донастройки</em>
-          </h2>
+          <div className="flex items-center gap-3 mb-10">
+            <SecNum n="05" />
+            <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Примеры заданий</h2>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-px" style={{ background: C.border }}>
+          <p className="text-slate-500 text-base mb-10 max-w-xl leading-relaxed">
+            Четыре сценария донастройки — задания, которые ИИ не выполнит вместо студента
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-5">
             {[
               {
-                num: "1",
-                tag: "T2 · Небуквальные смыслы",
+                num: "1", tag: "T2 · Небуквальные смыслы",
+                icon: "MessageCircle", color: "bg-violet-50 text-violet-600",
                 title: "Импликатуры",
                 goal: "Развить способность выводить и продуцировать небуквальные смыслы",
-                icon: "MessageCircle",
                 bullets: [
                   "Студенты получают диалоги с непрямыми репликами",
-                  "Задача: объяснить «что имел в виду говорящий» — не буквально",
+                  "Задача: объяснить «что имел в виду говорящий»",
                   "Второй этап: самостоятельно продуцировать косвенные высказывания",
                 ],
               },
               {
-                num: "2",
-                tag: "T3 · Лексико-тематические связи",
+                num: "2", tag: "T3 · Лексико-тематические связи",
+                icon: "Network", color: "bg-blue-50 text-blue-600",
                 title: "От слов к контексту",
-                goal: "Использовать лексику как часть прагматической схемы (жалоба → набор слов и структур)",
-                icon: "Network",
+                goal: "Использовать лексику как часть прагматической схемы (жалоба → набор слов)",
                 bullets: [
                   "Заданная коммуникативная ситуация: жалоба, просьба, совет",
                   "Построить лексическое поле для ситуации в группе",
@@ -487,23 +489,21 @@ export default function Index() {
                 ],
               },
               {
-                num: "3",
-                tag: "T4 · Социопрагматическая уместность",
+                num: "3", tag: "T4 · Социопрагматическая уместность",
+                icon: "Users", color: "bg-teal-50 text-teal-600",
                 title: "Кто, кому, когда, где",
                 goal: "Развить чувствительность к вариативности в зависимости от контекста",
-                icon: "Users",
                 bullets: [
-                  "Одна и та же просьба: 4 варианта (преподаватель / друг / начальник / незнакомый)",
+                  "Одна просьба: 4 варианта (преподаватель / друг / начальник / незнакомый)",
                   "Объяснить выбор слов, тона, структуры",
                   "Выявить «нейтральный» AI-стиль и его дефициты",
                 ],
               },
               {
-                num: "4",
-                tag: "T5 · Стратегии восстановления",
+                num: "4", tag: "T5 · Стратегии восстановления",
+                icon: "RefreshCw", color: "bg-orange-50 text-orange-600",
                 title: "Repair",
                 goal: "Научиться запрашивать и предоставлять уточнение при коммуникативном сбое",
-                icon: "RefreshCw",
                 bullets: [
                   "Партнёр намеренно вносит помехи: неточность, двусмысленность",
                   "Студент обязан запросить уточнение и отреагировать",
@@ -511,85 +511,90 @@ export default function Index() {
                 ],
               },
             ].map((ex) => (
-              <div key={ex.num} style={{ background: C.bg }}
-                className="p-8 group hover:brightness-110 transition-all">
-                <div className="flex items-start justify-between mb-5">
-                  <span style={{ ...serif, color: C.border }} className="text-5xl font-light select-none group-hover:text-[#2A2A20] transition-colors">{ex.num}</span>
-                  <span style={{ color: C.gold }} className="text-[9px] tracking-[0.15em] uppercase text-right mt-1">{ex.tag}</span>
+              <Card key={ex.num} className="p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${ex.color}`}>
+                    <Icon name={ex.icon as "Users"} size={18} />
+                  </div>
+                  <Pill>{ex.tag}</Pill>
                 </div>
-                <p style={{ color: C.text }} className="text-[15px] font-semibold mb-2">{ex.title}</p>
-                <p style={{ color: C.muted }} className="text-[12px] italic mb-5 leading-relaxed border-l border-[#252520] pl-3">{ex.goal}</p>
+                <p className="text-[17px] font-bold text-slate-900 mb-1">{ex.title}</p>
+                <p className="text-[12px] text-slate-400 italic mb-4 leading-relaxed">{ex.goal}</p>
                 <ul className="space-y-2">
                   {ex.bullets.map(b => (
-                    <li key={b} className="flex gap-2 text-[12px]" style={{ color: "#7A7A6A" }}>
-                      <span style={{ color: C.gold }} className="mt-0.5 shrink-0">→</span>{b}
+                    <li key={b} className="flex gap-2.5 text-[13px] text-slate-600">
+                      <span className="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center shrink-0 mt-0.5">
+                        <Icon name="Check" size={9} className="text-slate-400" />
+                      </span>
+                      {b}
                     </li>
                   ))}
                 </ul>
-              </div>
+              </Card>
             ))}
           </div>
         </section>
 
-        {/* ══════════════════════════════════════
+        {/* ══════════════════════════════
             06  ЧТО ОЦЕНИВАТЬ
-        ══════════════════════════════════════ */}
+        ══════════════════════════════ */}
         <section id="assess" onMouseEnter={() => setActive("assess")}
-          className="px-12 md:px-20 py-14">
-          <SLabel num="06" title="Что оценивать?" />
+          className="py-20 border-t border-slate-100">
 
-          <h2 style={{ ...serif, color: C.text }} className="text-3xl md:text-5xl font-light mb-14 leading-tight">
-            Критерии оценивания<br />
-            <em style={{ color: C.gold }}>живого навыка</em>
-          </h2>
+          <div className="flex items-center gap-3 mb-10">
+            <SecNum n="06" />
+            <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Что оценивать?</h2>
+          </div>
 
-          <div className="max-w-3xl">
+          <p className="text-slate-500 text-base mb-10 max-w-xl leading-relaxed">
+            Критерии оценивания живого навыка — не продукта, а процесса
+          </p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mb-14">
             {[
-              { n: "01", title: "Продуктивная когнитивная нагрузка",    desc: "Уровень усилия, затраченного на порождение смысла — не воспроизведение шаблона" },
-              { n: "02", title: "Гибкость коммуникативных стратегий",   desc: "Способность менять тактику при изменении контекста, задачи или собеседника" },
-              { n: "03", title: "Генерация новых идей",                  desc: "Частота появления оригинальных смысловых ходов, не заимствованных из источников" },
-              { n: "04", title: "Интеграция личного опыта",              desc: "Способность органично встроить собственный контекст в иноязычное высказывание" },
-              { n: "05", title: "Осознанность выбора",                   desc: "Способность объяснить, почему выбрана именно эта языковая форма в данном контексте" },
+              { n: "01", title: "Продуктивная когнитивная нагрузка",  desc: "Уровень усилия при порождении смысла — не воспроизведение шаблона",          icon: "Brain" },
+              { n: "02", title: "Гибкость коммуникативных стратегий", desc: "Способность менять тактику при изменении контекста или собеседника",           icon: "Shuffle" },
+              { n: "03", title: "Генерация новых идей",               desc: "Частота оригинальных смысловых ходов, не заимствованных из источников",         icon: "Lightbulb" },
+              { n: "04", title: "Интеграция личного опыта",           desc: "Органичное встраивание собственного контекста в иноязычное высказывание",        icon: "User" },
+              { n: "05", title: "Осознанность выбора",                desc: "Способность объяснить выбор языковой формы в данном контексте",                  icon: "Eye" },
             ].map((it) => (
-              <div key={it.n} style={{ borderColor: C.border }}
-                className="group flex items-start gap-7 py-7 border-b">
-                <span style={{ color: C.dim, fontFamily: "monospace" }} className="text-[10px] mt-0.5 shrink-0">{it.n}</span>
-                <div className="flex-1">
-                  <p style={{ color: C.text }} className="text-[15px] font-medium mb-1.5">{it.title}</p>
-                  <p style={{ color: C.muted }} className="text-[13px] leading-relaxed">{it.desc}</p>
+              <Card key={it.n} className="p-5 hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="font-mono text-[10px] text-slate-300">{it.n}</span>
+                  <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center">
+                    <Icon name={it.icon as "Eye"} size={13} className="text-violet-500" />
+                  </div>
                 </div>
-                <div style={{ borderColor: C.border }}
-                  className="w-7 h-7 rounded-full border flex items-center justify-center group-hover:border-[#C8A96E] transition-colors shrink-0 mt-0.5">
-                  <Icon name="ArrowRight" size={11} style={{ color: C.dim }} className="group-hover:text-[#C8A96E] transition-colors" />
-                </div>
-              </div>
+                <p className="text-[14px] font-semibold text-slate-800 mb-1.5 leading-snug">{it.title}</p>
+                <p className="text-[12px] text-slate-400 leading-relaxed">{it.desc}</p>
+              </Card>
             ))}
           </div>
 
           {/* Финальный тезис */}
-          <div style={{ borderColor: C.border }} className="mt-20 pt-10 border-t grid md:grid-cols-2 gap-10 items-end">
-            <div>
-              <p style={{ color: C.dim }} className="text-[10px] uppercase tracking-[0.3em] mb-4">Итоговый тезис</p>
-              <p style={{ ...serif, color: C.text }} className="text-2xl md:text-3xl font-light leading-relaxed">
-                Задание устойчиво, если его результат<br />
-                <em style={{ color: C.gold }}>уникален для конкретного студента</em><br />
-                в конкретный момент времени
-              </p>
-            </div>
-            <div className="flex flex-col items-start md:items-end gap-3">
-              <Tag>HSE LED 2026</Tag>
-              <p style={{ color: C.dim }} className="text-[12px]">Лаврентьева · Орлова</p>
+          <div className="bg-gradient-to-br from-violet-600 to-violet-700 rounded-2xl p-8 md:p-10 max-w-2xl">
+            <p className="text-violet-200 text-[11px] uppercase tracking-widest font-medium mb-4">Итоговый тезис</p>
+            <p style={{ fontFamily: "'Cormorant','Georgia',serif" }}
+              className="text-white text-2xl md:text-3xl font-light leading-relaxed">
+              Задание устойчиво, если его результат<br />
+              <em className="text-violet-200">уникален для конкретного студента</em><br />
+              в конкретный момент времени
+            </p>
+            <Divider />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-violet-200 text-[12px]">Лаврентьева · Орлова</p>
+                <p className="text-violet-300 text-[11px] mt-0.5">HSE LED 2026</p>
+              </div>
               <button onClick={() => goto("cover")}
-                className="flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase transition-colors mt-1"
-                style={{ color: C.dim }}
-                onMouseEnter={e => (e.currentTarget.style.color = C.gold)}
-                onMouseLeave={e => (e.currentTarget.style.color = C.dim)}>
-                <Icon name="ArrowUp" size={11} />В начало
+                className="flex items-center gap-2 text-violet-200 hover:text-white text-[12px] transition-colors">
+                <Icon name="ArrowUp" size={13} />В начало
               </button>
             </div>
           </div>
         </section>
 
+        <div className="h-16" />
       </div>
     </div>
   );
