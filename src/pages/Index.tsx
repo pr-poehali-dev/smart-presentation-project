@@ -17,7 +17,7 @@ function Pill({ children, accent }: { children: React.ReactNode; accent?: boolea
   return (
     <span className={`inline-block text-[11px] font-medium tracking-wide px-3 py-1 rounded-full
       ${accent
-        ? "bg-violet-600 text-white"
+        ? "bg-sky-500 text-white"
         : "bg-slate-100 text-slate-500 border border-slate-200"}`}>
       {children}
     </span>
@@ -65,7 +65,7 @@ export default function Index() {
               <button key={n.id} onClick={() => goto(n.id)}
                 className={`px-3 py-1.5 rounded-lg text-[12px] transition-all duration-200
                   ${active === n.id
-                    ? "bg-violet-50 text-violet-700 font-semibold"
+                    ? "bg-sky-50 text-sky-700 font-semibold"
                     : "text-slate-400 hover:text-slate-700 hover:bg-slate-50"}`}>
                 {n.label}
               </button>
@@ -95,7 +95,7 @@ export default function Index() {
               className="text-[clamp(2.6rem,5.5vw,5.5rem)] font-light leading-[1.06] tracking-tight text-slate-900 mb-6">
               Проектирование учебных заданий<br />
               по английскому языку<br />
-              <span className="text-violet-600 italic">для неязыковых вузов</span><br />
+              <span className="text-sky-600 italic">для неязыковых вузов</span><br />
               в эпоху генеративного ИИ
             </h1>
             <p className="text-slate-400 text-lg">От принципов до готовых сценариев</p>
@@ -108,7 +108,7 @@ export default function Index() {
             ].map((a, i) => (
               <Card key={a.name} className="px-6 py-4 flex items-center gap-4">
                 <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0
-                  ${i === 0 ? "bg-violet-500" : "bg-slate-400"}`}>
+                  ${i === 0 ? "bg-sky-500" : "bg-slate-400"}`}>
                   {a.name[0]}
                 </div>
                 <div>
@@ -123,8 +123,8 @@ export default function Index() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {NAV.slice(1).map((n) => (
               <button key={n.id} onClick={() => goto(n.id)}
-                className="group flex flex-col gap-1 p-4 rounded-xl border border-slate-200 bg-white hover:border-violet-300 hover:shadow-sm transition-all text-left">
-                <span className="font-mono text-[10px] text-slate-300 group-hover:text-violet-400 transition-colors">{n.short}</span>
+                className="group flex flex-col gap-1 p-4 rounded-xl border border-slate-200 bg-white hover:border-sky-300 hover:shadow-sm transition-all text-left">
+                <span className="font-mono text-[10px] text-slate-300 group-hover:text-sky-400 transition-colors">{n.short}</span>
                 <span className="text-[12px] text-slate-600 font-medium leading-snug">{n.label}</span>
               </button>
             ))}
@@ -150,7 +150,7 @@ export default function Index() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {[
-              { icon: "BookOpen",   color: "bg-violet-50 text-violet-600",  label: "Лингвистический",                sub: "Грамотность и связность текста" },
+              { icon: "BookOpen",   color: "bg-sky-50 text-sky-600",  label: "Лингвистический",                sub: "Грамотность и связность текста" },
               { icon: "GitBranch",  color: "bg-blue-50 text-blue-600",      label: "Дискурсивный / стратегический", sub: "Логичное высказывание + тактики компенсации" },
               { icon: "Globe",      color: "bg-teal-50 text-teal-600",      label: "Социокультурный",               sub: "Понимание культурного контекста" },
               { icon: "Smartphone", color: "bg-orange-50 text-orange-600",  label: "Прагматический / цифровой",    sub: "Реальные задачи + цифровые инструменты" },
@@ -184,7 +184,7 @@ export default function Index() {
               <div key={s} className="flex items-center gap-2">
                 <span className={`px-4 py-2 rounded-lg text-[13px] font-medium
                   ${i === a.length - 1
-                    ? "bg-violet-600 text-white shadow-sm shadow-violet-200"
+                    ? "bg-sky-500 text-white shadow-sm shadow-sky-200"
                     : "bg-white border border-slate-200 text-slate-600"}`}>{s}</span>
                 {i < a.length - 1 && <Icon name="ChevronRight" size={14} className="text-slate-300" />}
               </div>
@@ -205,7 +205,7 @@ export default function Index() {
             ))}
           </div>
 
-          <div className="bg-violet-50 border border-violet-100 rounded-xl px-6 py-4 text-[13px] text-violet-700 italic max-w-2xl">
+          <div className="bg-sky-50 border border-sky-100 rounded-xl px-6 py-4 text-[13px] text-sky-700 italic max-w-2xl">
             Подлинная автоматизация формируется через процедурализацию в условиях, приближённых к реальным
           </div>
 
@@ -221,20 +221,20 @@ export default function Index() {
               <p className="text-[11px] uppercase tracking-widest text-slate-300 mb-3 font-medium">Лингвистический трек</p>
               <p className="text-[14px] text-slate-500 italic">Без изменений — традиционный путь формирования навыка</p>
             </Card>
-            <Card className="p-6 border-violet-200 bg-violet-50/50">
-              <p className="text-[11px] uppercase tracking-widest text-violet-500 mb-4 font-medium">AI-опосредованный трек — новый</p>
+            <Card className="p-6 border-sky-200 bg-sky-50/50">
+              <p className="text-[11px] uppercase tracking-widest text-sky-500 mb-4 font-medium">AI-опосредованный трек — новый</p>
               <ul className="space-y-2 mb-5">
                 {["Практика с немедленной обратной связью", "Метакогнитивный контроль", "Адаптация к ии-собеседнику"].map(it => (
                   <li key={it} className="flex gap-2 text-[13px] text-slate-600">
-                    <Icon name="Check" size={13} className="text-violet-500 mt-0.5 shrink-0" />{it}
+                    <Icon name="Check" size={13} className="text-sky-500 mt-0.5 shrink-0" />{it}
                   </li>
                 ))}
               </ul>
-              <div className="border-t border-violet-100 pt-4">
+              <div className="border-t border-sky-100 pt-4">
                 <p className="text-[11px] uppercase tracking-widest text-slate-400 mb-2 font-medium">Human-надстройка</p>
                 <div className="flex flex-wrap gap-1.5">
                   {["Интеракциональная точность", "Прагматическая гибкость", "Эмоциональная связь"].map(it => (
-                    <span key={it} className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-violet-200 text-violet-600">{it}</span>
+                    <span key={it} className="text-[11px] px-2.5 py-1 rounded-full bg-white border border-sky-200 text-sky-600">{it}</span>
                   ))}
                 </div>
               </div>
@@ -287,8 +287,8 @@ export default function Index() {
               { label: "Прагматическая компетенция",  sub: "Способность действовать уместно, управлять социальными отношениями", arrow: null },
             ].map((node, i) => (
               <div key={node.label}>
-                <Card className={`p-5 ${i === 2 ? "border-violet-200 bg-violet-50/40" : ""}`}>
-                  <p className={`text-[14px] font-semibold mb-1 ${i === 2 ? "text-violet-700" : "text-slate-800"}`}>{node.label}</p>
+                <Card className={`p-5 ${i === 2 ? "border-sky-200 bg-sky-50/40" : ""}`}>
+                  <p className={`text-[14px] font-semibold mb-1 ${i === 2 ? "text-sky-700" : "text-slate-800"}`}>{node.label}</p>
                   <p className="text-[12px] text-slate-400">{node.sub}</p>
                 </Card>
                 {node.arrow && (
@@ -315,7 +315,7 @@ export default function Index() {
               { m: "Manner",   rule: "Будь ясен, краток, организован",     ai: "Verbosity, нет иерархии" },
             ].map((g) => (
               <Card key={g.m} className="p-4">
-                <p className="font-mono text-[13px] font-bold text-violet-600 mb-2">{g.m}</p>
+                <p className="font-mono text-[13px] font-bold text-sky-600 mb-2">{g.m}</p>
                 <p className="text-[11px] text-slate-500 mb-3 leading-relaxed">{g.rule}</p>
                 <div className="flex items-start gap-1.5">
                   <Icon name="AlertCircle" size={11} className="text-red-400 mt-0.5 shrink-0" />
@@ -387,9 +387,9 @@ export default function Index() {
                   { t: "Персонализация",    d: "Личный опыт, убеждения, позиция студента",   icon: "User" },
                   { t: "Акцент на процесс", d: "Важен путь, а не только финальный продукт",  icon: "Route" },
                 ].map((p) => (
-                  <Card key={p.t} className="p-4 flex items-start gap-4 hover:border-violet-200 transition-colors">
-                    <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
-                      <Icon name={p.icon as "User"} size={14} className="text-violet-500" />
+                  <Card key={p.t} className="p-4 flex items-start gap-4 hover:border-sky-200 transition-colors">
+                    <div className="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center shrink-0">
+                      <Icon name={p.icon as "User"} size={14} className="text-sky-500" />
                     </div>
                     <div>
                       <p className="text-[13px] font-semibold text-slate-800">{p.t}</p>
@@ -407,7 +407,7 @@ export default function Index() {
                 {["Динамичность", "Непредсказуемость", "Мета-когнитивная нагрузка", "Интеграция навыков",
                   "Контент в реальном времени", "Социальное взаимодействие", "Аффективное вовлечение"].map((c) => (
                   <span key={c} className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-[12px] font-medium
-                    hover:bg-violet-100 hover:text-violet-700 transition-colors cursor-default">{c}</span>
+                    hover:bg-sky-100 hover:text-sky-700 transition-colors cursor-default">{c}</span>
                 ))}
               </div>
             </div>
@@ -437,7 +437,7 @@ export default function Index() {
                 ].map((row, i) => (
                   <tr key={row.t} className={`border-b border-slate-50 hover:bg-slate-50 transition-colors ${i % 2 === 0 ? "" : ""}`}>
                     <td className="py-3.5 px-5">
-                      <span className="font-mono font-bold text-violet-600 text-[12px]">{row.t}</span>
+                      <span className="font-mono font-bold text-sky-600 text-[12px]">{row.t}</span>
                     </td>
                     <td className="py-3.5 px-5 font-medium text-slate-800">{row.name}</td>
                     <td className="py-3.5 px-5 text-slate-400">{row.deficit}</td>
@@ -468,7 +468,7 @@ export default function Index() {
             {[
               {
                 num: "1", tag: "T2 · Небуквальные смыслы",
-                icon: "MessageCircle", color: "bg-violet-50 text-violet-600",
+                icon: "MessageCircle", color: "bg-sky-50 text-sky-600",
                 title: "Импликатуры",
                 goal: "Развить способность выводить и продуцировать небуквальные смыслы",
                 bullets: [
@@ -490,7 +490,7 @@ export default function Index() {
               },
               {
                 num: "3", tag: "T4 · Социопрагматическая уместность",
-                icon: "Users", color: "bg-teal-50 text-teal-600",
+                icon: "Users", color: "bg-emerald-50 text-emerald-600",
                 title: "Кто, кому, когда, где",
                 goal: "Развить чувствительность к вариативности в зависимости от контекста",
                 bullets: [
@@ -501,7 +501,7 @@ export default function Index() {
               },
               {
                 num: "4", tag: "T5 · Стратегии восстановления",
-                icon: "RefreshCw", color: "bg-orange-50 text-orange-600",
+                icon: "RefreshCw", color: "bg-green-50 text-green-600",
                 title: "Repair",
                 goal: "Научиться запрашивать и предоставлять уточнение при коммуникативном сбое",
                 bullets: [
@@ -561,8 +561,8 @@ export default function Index() {
               <Card key={it.n} className="p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="font-mono text-[10px] text-slate-300">{it.n}</span>
-                  <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center">
-                    <Icon name={it.icon as "Eye"} size={13} className="text-violet-500" />
+                  <div className="w-7 h-7 rounded-lg bg-sky-50 flex items-center justify-center">
+                    <Icon name={it.icon as "Eye"} size={13} className="text-sky-500" />
                   </div>
                 </div>
                 <p className="text-[14px] font-semibold text-slate-800 mb-1.5 leading-snug">{it.title}</p>
@@ -572,22 +572,22 @@ export default function Index() {
           </div>
 
           {/* Финальный тезис */}
-          <div className="bg-gradient-to-br from-violet-600 to-violet-700 rounded-2xl p-8 md:p-10 max-w-2xl">
-            <p className="text-violet-200 text-[11px] uppercase tracking-widest font-medium mb-4">Итоговый тезис</p>
+          <div className="bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl p-8 md:p-10 max-w-2xl">
+            <p className="text-sky-100 text-[11px] uppercase tracking-widest font-medium mb-4">Итоговый тезис</p>
             <p style={{ fontFamily: "'Cormorant','Georgia',serif" }}
               className="text-white text-2xl md:text-3xl font-light leading-relaxed">
               Задание устойчиво, если его результат<br />
-              <em className="text-violet-200">уникален для конкретного студента</em><br />
+              <em className="text-sky-200">уникален для конкретного студента</em><br />
               в конкретный момент времени
             </p>
             <Divider />
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-violet-200 text-[12px]">Лаврентьева · Орлова</p>
-                <p className="text-violet-300 text-[11px] mt-0.5">HSE LED 2026</p>
+                <p className="text-sky-100 text-[12px]">Лаврентьева · Орлова</p>
+                <p className="text-sky-200 text-[11px] mt-0.5">HSE LED 2026</p>
               </div>
               <button onClick={() => goto("cover")}
-                className="flex items-center gap-2 text-violet-200 hover:text-white text-[12px] transition-colors">
+                className="flex items-center gap-2 text-sky-100 hover:text-white text-[12px] transition-colors">
                 <Icon name="ArrowUp" size={13} />В начало
               </button>
             </div>
