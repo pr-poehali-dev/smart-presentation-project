@@ -20,7 +20,7 @@ export default {
 		},
 		fontFamily: {
 			cormorant: ['Cormorant', 'Georgia', 'serif'],
-			ibm: ['IBM Plex Sans', 'sans-serif'],
+			golos: ['Golos Text', 'sans-serif'],
 		},
 		extend: {
 			colors: {
