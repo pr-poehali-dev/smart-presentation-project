@@ -11,23 +11,19 @@ const NAV = [
   { id: "assess",   label: "Оценивание",      short: "06" },
 ];
 
-// ─── микро-компоненты ────────────────────────────────────────
+// ─── micro UI ──────────────────────────────────────────────
 
 function Pill({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
   return (
     <span className={`inline-block text-[11px] font-medium tracking-wide px-3 py-1 rounded-full
-      ${accent
-        ? "bg-sky-500 text-white"
-        : "bg-slate-100 text-slate-500 border border-slate-200"}`}>
+      ${accent ? "bg-sky-500 text-white" : "bg-slate-100 text-slate-500 border border-slate-200"}`}>
       {children}
     </span>
   );
 }
 
 function SecNum({ n }: { n: string }) {
-  return (
-    <span className="font-mono text-[11px] text-slate-300 tracking-widest select-none">{n}</span>
-  );
+  return <span className="font-mono text-[11px] text-slate-300 tracking-widest select-none">{n}</span>;
 }
 
 function Divider() {
@@ -42,7 +38,7 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
   );
 }
 
-// ─── главный компонент ────────────────────────────────────────
+// ─── main ──────────────────────────────────────────────────
 
 export default function Index() {
   const [active, setActive] = useState("cover");
@@ -95,20 +91,19 @@ export default function Index() {
               className="text-[clamp(2.6rem,5.5vw,5.5rem)] font-light leading-[1.06] tracking-tight text-slate-900 mb-6">
               Проектирование учебных заданий<br />
               по английскому языку<br />
-              <span className="text-sky-600 italic">для неязыковых вузов</span><br />
+              <span className="text-sky-500 italic">для неязыковых вузов</span><br />
               в эпоху генеративного ИИ
             </h1>
             <p className="text-slate-400 text-lg">От принципов до готовых сценариев</p>
           </div>
 
-          <div className="flex flex-wrap gap-5">
+          <div className="flex flex-wrap gap-4">
             {[
-              { name: "Наталья Геннадьевна Лаврентьева", org: "Ивановский государственный университет" },
-              { name: "Евгения Валерьевна Орлова",       org: "Ивановский государственный энергетический университет" },
-            ].map((a, i) => (
+              { name: "Наталья Геннадьевна Лаврентьева", org: "Ивановский государственный университет",           color: "bg-sky-500" },
+              { name: "Евгения Валерьевна Орлова",        org: "Ивановский государственный энергетический университет", color: "bg-slate-400" },
+            ].map((a) => (
               <Card key={a.name} className="px-6 py-4 flex items-center gap-4">
-                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0
-                  ${i === 0 ? "bg-sky-500" : "bg-slate-400"}`}>
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0 ${a.color}`}>
                   {a.name[0]}
                 </div>
                 <div>
@@ -119,7 +114,6 @@ export default function Index() {
             ))}
           </div>
 
-          {/* Оглавление */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
             {NAV.slice(1).map((n) => (
               <button key={n.id} onClick={() => goto(n.id)}
@@ -144,28 +138,29 @@ export default function Index() {
             </h2>
           </div>
 
-          {/* Блок компетенций */}
+          {/* Компетенции */}
           <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
-            Иноязычная коммуникативная компетенция
+            Иноязычная коммуникативная компетенция · аспекты
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {[
-              { icon: "BookOpen",   color: "bg-sky-50 text-sky-600",  label: "Лингвистический",                sub: "Грамотность и связность текста" },
-              { icon: "GitBranch",  color: "bg-blue-50 text-blue-600",      label: "Дискурсивный / стратегический", sub: "Логичное высказывание + тактики компенсации" },
-              { icon: "Globe",      color: "bg-teal-50 text-teal-600",      label: "Социокультурный",               sub: "Понимание культурного контекста" },
-              { icon: "Smartphone", color: "bg-orange-50 text-orange-600",  label: "Прагматический / цифровой",    sub: "Реальные задачи + цифровые инструменты" },
+              { icon: "BookOpen",   color: "bg-sky-50 text-sky-600",       label: "Лингвистический",               sub: "Умение строить связные грамотные тексты" },
+              { icon: "GitBranch",  color: "bg-blue-50 text-blue-600",     label: "Дискурсивный / стратегический", sub: "Логичное высказывание + тактики компенсации" },
+              { icon: "Globe",      color: "bg-teal-50 text-teal-600",     label: "Социокультурный",               sub: "Понимание культурного контекста" },
+              { icon: "Smartphone", color: "bg-orange-50 text-orange-500", label: "Прагматический / цифровой",    sub: "Реальные задачи + цифровые инструменты" },
             ].map((it) => (
               <Card key={it.label} className="p-5 hover:shadow-md transition-shadow">
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${it.color}`}>
                   <Icon name={it.icon as "Globe"} size={16} />
                 </div>
-                <p className="text-[14px] font-semibold text-slate-800 mb-1 leading-snug">{it.label}</p>
+                <p className="text-[14px] font-semibold text-slate-800 mb-1">{it.label}</p>
                 <p className="text-[12px] text-slate-400 leading-relaxed">{it.sub}</p>
               </Card>
             ))}
           </div>
 
           <div className="flex flex-wrap gap-2 mb-12">
+            <p className="w-full text-[11px] text-slate-300 uppercase tracking-widest mb-1">Условия формирования</p>
             {["Автоматизм", "Функциональность", "Адаптивность и гибкость"].map((c) => (
               <Pill key={c}>{c}</Pill>
             ))}
@@ -178,7 +173,6 @@ export default function Index() {
             Skill Acquisition Theory · 1.1 Продуктивный коммуникативный навык
           </p>
 
-          {/* Цепочка */}
           <div className="flex flex-wrap items-center gap-2 mb-8">
             {["Декларативный", "Процедурный", "Автоматический", "Перенос в реальную коммуникацию"].map((s, i, a) => (
               <div key={s} className="flex items-center gap-2">
@@ -191,12 +185,12 @@ export default function Index() {
             ))}
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {[
-              { t: "Активное извлечение",      d: "Рассказ и ответы без опоры на текст; переключение в диалоге" },
-              { t: "«Желательные трудности»",  d: "Чередование задач и структур, смещение фокуса с формы на смысл" },
-              { t: "Deliberate practice",       d: "Целенаправленное повторение с получением обратной связи" },
-              { t: "Реальный контекст",         d: "Упражнения имитируют когнитивные требования живой коммуникации" },
+              { t: "Активное извлечение",     d: "Рассказ, ответы без опоры на текст; переключение в диалоге — активное использование" },
+              { t: "«Желательные трудности»", d: "Чередование типов задач и структур, смещение фокуса с формы на смысл" },
+              { t: "Deliberate practice",      d: "Целенаправленное повторение с получением обратной связи — не просто общение" },
+              { t: "Реальный контекст",        d: "Упражнения имитируют когнитивные требования живой коммуникации" },
             ].map((it) => (
               <Card key={it.t} className="p-5">
                 <p className="text-[13px] font-semibold text-slate-800 mb-2">{it.t}</p>
@@ -205,7 +199,7 @@ export default function Index() {
             ))}
           </div>
 
-          <div className="bg-sky-50 border border-sky-100 rounded-xl px-6 py-4 text-[13px] text-sky-700 italic max-w-2xl">
+          <div className="bg-sky-50 border border-sky-100 rounded-xl px-6 py-4 text-[13px] text-sky-700 italic max-w-2xl mb-12">
             Подлинная автоматизация формируется через процедурализацию в условиях, приближённых к реальным
           </div>
 
@@ -213,7 +207,7 @@ export default function Index() {
 
           {/* AI-опосредованная модель */}
           <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
-            AI-опосредованная модель · 1.2 Устойчивость навыка
+            AI-опосредованная модель · 1.2 Устойчивость навыка в эпоху ИИ
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 max-w-3xl">
@@ -248,23 +242,25 @@ export default function Index() {
         <section id="limits" onMouseEnter={() => setActive("limits")}
           className="py-20 border-t border-slate-100">
 
-          <div className="flex items-center gap-3 mb-10">
+          <div className="flex items-center gap-3 mb-4">
             <SecNum n="02" />
             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Ограничения ИИ</h2>
           </div>
-
           <p className="text-slate-500 text-base max-w-xl mb-10 leading-relaxed">
             LLM не улавливают тонкие дискурсивные связи — это создаёт системные дефициты в формировании навыка
           </p>
 
-          <div className="grid sm:grid-cols-3 gap-4 mb-14">
+          {/* 4 дефицита */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
             {[
               { area: "Лексика и грамматика", icon: "Type",     color: "bg-red-50 text-red-500",
-                body: "LLM не улавливают тонкие лексические связи между частями дискурса. Знание ассоциативных полей формируется только в прагматических активностях." },
+                body: "LLM не улавливают тонкие лексические связи. Знание ассоциативных полей формируется только в прагматических активностях — критично для беглой речи." },
               { area: "Чтение",               icon: "BookOpen", color: "bg-amber-50 text-amber-500",
                 body: "Контекстуальное понимание — реконструкция интенционального смысла с учётом ситуации и фоновых знаний — недоступно для модели." },
-              { area: "Говорение",             icon: "Mic",      color: "bg-orange-50 text-orange-500",
-                body: "Машинный тип прагматики развивает «шаблонный» язык: отсутствуют живые «прагматические» реакции и спонтанность речи." },
+              { area: "Письмо",               icon: "PenLine",  color: "bg-orange-50 text-orange-500",
+                body: "Гомогенизация «ломает» коммуникацию: развивается шаблонный усреднённый язык, отсутствуют логические акценты и авторский голос." },
+              { area: "Говорение",             icon: "Mic",      color: "bg-rose-50 text-rose-500",
+                body: "Машинный тип прагматики: отсутствие живых «прагматических» реакций, развитие шаблонного языка без спонтанности." },
             ].map((it) => (
               <Card key={it.area} className="p-6 hover:shadow-md transition-shadow">
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center mb-4 ${it.color}`}>
@@ -280,10 +276,10 @@ export default function Index() {
           <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
             Иерархия компетенций
           </p>
-          <div className="flex flex-col gap-0 max-w-lg">
+          <div className="flex flex-col gap-0 max-w-md mb-14">
             {[
-              { label: "Лексико-тематические связи",  sub: "Знание слов и их ассоциативных полей",                             arrow: "обеспечивают материал для" },
-              { label: "Контекстуальное понимание",   sub: "Способность выводить импликатуры, интерпретировать интенции",       arrow: "создаёт основу для" },
+              { label: "Лексико-тематические связи",  sub: "Знание слов и их ассоциативных полей",                              arrow: "обеспечивают материал для" },
+              { label: "Контекстуальное понимание",   sub: "Способность выводить импликатуры, интерпретировать интенции",        arrow: "создаёт основу для" },
               { label: "Прагматическая компетенция",  sub: "Способность действовать уместно, управлять социальными отношениями", arrow: null },
             ].map((node, i) => (
               <div key={node.label}>
@@ -301,8 +297,6 @@ export default function Index() {
             ))}
           </div>
 
-          <Divider />
-
           {/* Максимы Грайса */}
           <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-5">
             Письмо · нарушение максим Грайса при AI-генерации
@@ -315,7 +309,7 @@ export default function Index() {
               { m: "Manner",   rule: "Будь ясен, краток, организован",     ai: "Verbosity, нет иерархии" },
             ].map((g) => (
               <Card key={g.m} className="p-4">
-                <p className="font-mono text-[13px] font-bold text-sky-600 mb-2">{g.m}</p>
+                <p className="font-mono text-[13px] font-bold text-sky-500 mb-2">{g.m}</p>
                 <p className="text-[11px] text-slate-500 mb-3 leading-relaxed">{g.rule}</p>
                 <div className="flex items-start gap-1.5">
                   <Icon name="AlertCircle" size={11} className="text-red-400 mt-0.5 shrink-0" />
@@ -332,26 +326,25 @@ export default function Index() {
         <section id="effects" onMouseEnter={() => setActive("effects")}
           className="py-20 border-t border-slate-100">
 
-          <div className="flex items-center gap-3 mb-10">
+          <div className="flex items-center gap-3 mb-4">
             <SecNum n="03" />
             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Side-эффекты в обучении с ИИ</h2>
           </div>
-
           <p className="text-slate-500 text-base mb-10 max-w-lg leading-relaxed">
             Риски, которые нельзя игнорировать при проектировании учебной среды
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
             {[
-              { n: "01", title: "Перенос ответственности",                desc: "Студент делегирует мышление инструменту, теряя авторство",              icon: "ArrowRightLeft" },
-              { n: "02", title: "Эхо-камера",                             desc: "Подтверждение имеющихся идей без критического вызова",                    icon: "Volume2" },
-              { n: "03", title: "Упрощение опыта",                        desc: "Редукция сложности — обход когнитивных трудностей",                       icon: "TrendingDown" },
-              { n: "04", title: "Потеря настойчивости",                   desc: "Снижение толерантности к трудности и усилию",                             icon: "Wind" },
-              { n: "05", title: "Слабость самостоятельной работы",        desc: "Деградация продуктивных навыков без поддержки ИИ",                         icon: "UserX" },
+              { title: "Перенос ответственности",             desc: "Студент делегирует мышление инструменту, теряя авторство",        icon: "ArrowRightLeft" },
+              { title: "Эхо-камера",                          desc: "Подтверждение имеющихся идей без критического вызова",              icon: "Volume2" },
+              { title: "Упрощение опыта",                     desc: "Редукция сложности — обход когнитивных трудностей",                icon: "TrendingDown" },
+              { title: "Потеря настойчивости",                desc: "Снижение толерантности к трудности и усилию",                      icon: "Wind" },
+              { title: "Слабость самостоятельной работы",     desc: "Деградация продуктивных навыков без поддержки ИИ",                 icon: "UserX" },
             ].map((it) => (
-              <Card key={it.n} className="p-5 hover:shadow-md transition-shadow">
+              <Card key={it.title} className="p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center shrink-0 mt-0.5">
                     <Icon name={it.icon as "Wind"} size={14} className="text-red-400" />
                   </div>
                   <div>
@@ -370,22 +363,24 @@ export default function Index() {
         <section id="tasks" onMouseEnter={() => setActive("tasks")}
           className="py-20 border-t border-slate-100">
 
-          <div className="flex items-center gap-3 mb-10">
+          <div className="flex items-center gap-3 mb-4">
             <SecNum n="04" />
             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
               Устойчивые задания: параметры, характеристики, принципы
             </h2>
           </div>
+          <p className="text-slate-500 text-base mb-10 max-w-xl leading-relaxed">
+            Задания, которые невозможно автоматизировать — потому что их результат уникален для каждого студента
+          </p>
 
           <div className="grid md:grid-cols-2 gap-10 max-w-4xl mb-14">
-            {/* Параметры */}
             <div>
               <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-4">Параметры устойчивости</p>
               <div className="space-y-3">
                 {[
-                  { t: "Контекстуализация", d: "Контекстное понимание, уникальная ситуация", icon: "MapPin" },
-                  { t: "Персонализация",    d: "Личный опыт, убеждения, позиция студента",   icon: "User" },
-                  { t: "Акцент на процесс", d: "Важен путь, а не только финальный продукт",  icon: "Route" },
+                  { t: "Контекстуализация", d: "Контекстное понимание, уникальная ситуация",       icon: "MapPin" },
+                  { t: "Персонализация",    d: "Личный опыт, убеждения, позиция студента",          icon: "User" },
+                  { t: "Акцент на процесс", d: "Важен путь выполнения, а не только финальный продукт", icon: "Route" },
                 ].map((p) => (
                   <Card key={p.t} className="p-4 flex items-start gap-4 hover:border-sky-200 transition-colors">
                     <div className="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center shrink-0">
@@ -400,12 +395,14 @@ export default function Index() {
               </div>
             </div>
 
-            {/* Характеристики */}
             <div>
               <p className="text-slate-400 text-[13px] uppercase tracking-widest font-medium mb-4">Характеристики заданий</p>
               <div className="flex flex-wrap gap-2">
-                {["Динамичность", "Непредсказуемость", "Мета-когнитивная нагрузка", "Интеграция навыков",
-                  "Контент в реальном времени", "Социальное взаимодействие", "Аффективное вовлечение"].map((c) => (
+                {[
+                  "Динамичность", "Непредсказуемость", "Мета-когнитивная нагрузка",
+                  "Интеграция навыков", "Контент в реальном времени",
+                  "Социальное взаимодействие", "Аффективное вовлечение",
+                ].map((c) => (
                   <span key={c} className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-[12px] font-medium
                     hover:bg-sky-100 hover:text-sky-700 transition-colors cursor-default">{c}</span>
                 ))}
@@ -428,16 +425,16 @@ export default function Index() {
               </thead>
               <tbody>
                 {[
-                  { t: "T1", name: "Релевантность и максимы",           deficit: "Relation, Quantity, Quality",              mech: "Маркировка нарушений + замена" },
+                  { t: "T1", name: "Релевантность и максимы",           deficit: "Relation, Quantity, Quality",              mech: "Маркировка нарушений + человеческая замена" },
                   { t: "T2", name: "Импликатуры и небуквальные смыслы", deficit: "Отсутствие Theory of Mind, буквализм",      mech: "Косвенные реплики → вывод импликатуры" },
                   { t: "T3", name: "Лексико-тематические связи",        deficit: "Тонкие лексические отношения, коллокации",  mech: "Групповое редактирование + аутентичные примеры" },
-                  { t: "T4", name: "Социопрагматическая уместность",   deficit: "Игнорирование дистанции и статуса",          mech: "Ролевая игра + объяснение выбора" },
+                  { t: "T4", name: "Социопрагматическая уместность",    deficit: "Игнорирование дистанции и статуса",          mech: "Ролевая игра + объяснение выбора" },
                   { t: "T5", name: "Ремонт и стратегии восстановления", deficit: "Отсутствие other-repair",                    mech: "Намеренные помехи + обязательная repair" },
                   { t: "T6", name: "Trans-pragmatic competence",        deficit: "Некритическая интернализация AI-шаблонов",   mech: "Групповая рефлексия + формулирование правил" },
-                ].map((row, i) => (
-                  <tr key={row.t} className={`border-b border-slate-50 hover:bg-slate-50 transition-colors ${i % 2 === 0 ? "" : ""}`}>
+                ].map((row) => (
+                  <tr key={row.t} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
                     <td className="py-3.5 px-5">
-                      <span className="font-mono font-bold text-sky-600 text-[12px]">{row.t}</span>
+                      <span className="font-mono font-bold text-sky-500 text-[12px]">{row.t}</span>
                     </td>
                     <td className="py-3.5 px-5 font-medium text-slate-800">{row.name}</td>
                     <td className="py-3.5 px-5 text-slate-400">{row.deficit}</td>
@@ -455,11 +452,10 @@ export default function Index() {
         <section id="examples" onMouseEnter={() => setActive("examples")}
           className="py-20 border-t border-slate-100">
 
-          <div className="flex items-center gap-3 mb-10">
+          <div className="flex items-center gap-3 mb-4">
             <SecNum n="05" />
             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Примеры заданий</h2>
           </div>
-
           <p className="text-slate-500 text-base mb-10 max-w-xl leading-relaxed">
             Четыре сценария донастройки — задания, которые ИИ не выполнит вместо студента
           </p>
@@ -468,20 +464,20 @@ export default function Index() {
             {[
               {
                 num: "1", tag: "T2 · Небуквальные смыслы",
-                icon: "MessageCircle", color: "bg-sky-50 text-sky-600",
-                title: "Импликатуры",
+                icon: "MessageCircle", color: "bg-sky-50 text-sky-500",
+                title: "Импликатуры: чтение между строк",
                 goal: "Развить способность выводить и продуцировать небуквальные смыслы",
                 bullets: [
                   "Студенты получают диалоги с непрямыми репликами",
-                  "Задача: объяснить «что имел в виду говорящий»",
+                  "Задача: объяснить «что имел в виду говорящий» — не буквально",
                   "Второй этап: самостоятельно продуцировать косвенные высказывания",
                 ],
               },
               {
                 num: "2", tag: "T3 · Лексико-тематические связи",
-                icon: "Network", color: "bg-blue-50 text-blue-600",
+                icon: "Network", color: "bg-blue-50 text-blue-500",
                 title: "От слов к контексту",
-                goal: "Использовать лексику как часть прагматической схемы (жалоба → набор слов)",
+                goal: "Использовать лексику как часть прагматической схемы (жалоба → набор слов и структур)",
                 bullets: [
                   "Заданная коммуникативная ситуация: жалоба, просьба, совет",
                   "Построить лексическое поле для ситуации в группе",
@@ -495,19 +491,19 @@ export default function Index() {
                 goal: "Развить чувствительность к вариативности в зависимости от контекста",
                 bullets: [
                   "Одна просьба: 4 варианта (преподаватель / друг / начальник / незнакомый)",
-                  "Объяснить выбор слов, тона, структуры",
-                  "Выявить «нейтральный» AI-стиль и его дефициты",
+                  "Объяснить выбор слов, тона, структуры для каждого случая",
+                  "Выявить «нейтральный» AI-стиль и его коммуникативные дефициты",
                 ],
               },
               {
                 num: "4", tag: "T5 · Стратегии восстановления",
                 icon: "RefreshCw", color: "bg-green-50 text-green-600",
-                title: "Repair",
+                title: "Repair: восстановление коммуникации",
                 goal: "Научиться запрашивать и предоставлять уточнение при коммуникативном сбое",
                 bullets: [
                   "Партнёр намеренно вносит помехи: неточность, двусмысленность",
-                  "Студент обязан запросить уточнение и отреагировать",
-                  "Оценивается: скорость обнаружения сбоя, стратегия repair",
+                  "Студент обязан обнаружить сбой, запросить уточнение и отреагировать",
+                  "Оценивается: скорость обнаружения сбоя, выбранная стратегия repair",
                 ],
               },
             ].map((ex) => (
@@ -519,7 +515,7 @@ export default function Index() {
                   <Pill>{ex.tag}</Pill>
                 </div>
                 <p className="text-[17px] font-bold text-slate-900 mb-1">{ex.title}</p>
-                <p className="text-[12px] text-slate-400 italic mb-4 leading-relaxed">{ex.goal}</p>
+                <p className="text-[12px] text-slate-400 italic mb-4 leading-relaxed border-l-2 border-slate-100 pl-3">{ex.goal}</p>
                 <ul className="space-y-2">
                   {ex.bullets.map(b => (
                     <li key={b} className="flex gap-2.5 text-[13px] text-slate-600">
@@ -541,28 +537,27 @@ export default function Index() {
         <section id="assess" onMouseEnter={() => setActive("assess")}
           className="py-20 border-t border-slate-100">
 
-          <div className="flex items-center gap-3 mb-10">
+          <div className="flex items-center gap-3 mb-4">
             <SecNum n="06" />
             <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Что оценивать?</h2>
           </div>
-
           <p className="text-slate-500 text-base mb-10 max-w-xl leading-relaxed">
-            Критерии оценивания живого навыка — не продукта, а процесса
+            Критерии оценивания живого навыка — не продукта, а процесса порождения смысла
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mb-14">
             {[
-              { n: "01", title: "Продуктивная когнитивная нагрузка",  desc: "Уровень усилия при порождении смысла — не воспроизведение шаблона",          icon: "Brain" },
-              { n: "02", title: "Гибкость коммуникативных стратегий", desc: "Способность менять тактику при изменении контекста или собеседника",           icon: "Shuffle" },
-              { n: "03", title: "Генерация новых идей",               desc: "Частота оригинальных смысловых ходов, не заимствованных из источников",         icon: "Lightbulb" },
-              { n: "04", title: "Интеграция личного опыта",           desc: "Органичное встраивание собственного контекста в иноязычное высказывание",        icon: "User" },
-              { n: "05", title: "Осознанность выбора",                desc: "Способность объяснить выбор языковой формы в данном контексте",                  icon: "Eye" },
+              { n: "01", title: "Продуктивная когнитивная нагрузка",  desc: "Уровень усилия при порождении смысла — не воспроизведение шаблона",         icon: "Brain",      color: "bg-sky-50 text-sky-500" },
+              { n: "02", title: "Гибкость коммуникативных стратегий", desc: "Способность менять тактику при изменении контекста или собеседника",          icon: "Shuffle",    color: "bg-blue-50 text-blue-500" },
+              { n: "03", title: "Генерация новых идей",               desc: "Частота оригинальных смысловых ходов, не заимствованных из источников",        icon: "Lightbulb",  color: "bg-amber-50 text-amber-500" },
+              { n: "04", title: "Интеграция личного опыта",           desc: "Органичное встраивание собственного контекста в иноязычное высказывание",       icon: "User",       color: "bg-emerald-50 text-emerald-600" },
+              { n: "05", title: "Осознанность выбора",                desc: "Способность объяснить выбор языковой формы именно в данном контексте",         icon: "Eye",        color: "bg-green-50 text-green-600" },
             ].map((it) => (
               <Card key={it.n} className="p-5 hover:shadow-md transition-shadow">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="font-mono text-[10px] text-slate-300">{it.n}</span>
-                  <div className="w-7 h-7 rounded-lg bg-sky-50 flex items-center justify-center">
-                    <Icon name={it.icon as "Eye"} size={13} className="text-sky-500" />
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${it.color}`}>
+                    <Icon name={it.icon as "Eye"} size={13} />
                   </div>
                 </div>
                 <p className="text-[14px] font-semibold text-slate-800 mb-1.5 leading-snug">{it.title}</p>
@@ -573,21 +568,21 @@ export default function Index() {
 
           {/* Финальный тезис */}
           <div className="bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl p-8 md:p-10 max-w-2xl">
-            <p className="text-sky-100 text-[11px] uppercase tracking-widest font-medium mb-4">Итоговый тезис</p>
+            <p className="text-sky-200 text-[11px] uppercase tracking-widest font-medium mb-4">Итоговый тезис</p>
             <p style={{ fontFamily: "'Cormorant','Georgia',serif" }}
               className="text-white text-2xl md:text-3xl font-light leading-relaxed">
               Задание устойчиво, если его результат<br />
-              <em className="text-sky-200">уникален для конкретного студента</em><br />
+              <em className="text-sky-100">уникален для конкретного студента</em><br />
               в конкретный момент времени
             </p>
-            <Divider />
+            <div className="h-px bg-white/20 my-6" />
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sky-100 text-[12px]">Лаврентьева · Орлова</p>
+                <p className="text-sky-100 text-[13px] font-medium">Лаврентьева · Орлова</p>
                 <p className="text-sky-200 text-[11px] mt-0.5">HSE LED 2026</p>
               </div>
               <button onClick={() => goto("cover")}
-                className="flex items-center gap-2 text-sky-100 hover:text-white text-[12px] transition-colors">
+                className="flex items-center gap-2 text-sky-200 hover:text-white text-[12px] transition-colors">
                 <Icon name="ArrowUp" size={13} />В начало
               </button>
             </div>
